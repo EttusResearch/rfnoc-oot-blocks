@@ -4,5 +4,5 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
-# Add one line for every image core here:
-#RFNOC_REGISTER_IMAGE_CORE(SRC my_image_core)
+RFNOC_REGISTER_IMAGE_CORE(SRC x410_200_2xAurora100Gbps_rfnoc_image_core.yml)
+RFNOC_REGISTER_IMAGE_CORE(SRC x410_X1_200_Aurora100Gbps_rfnoc_image_core.yml)

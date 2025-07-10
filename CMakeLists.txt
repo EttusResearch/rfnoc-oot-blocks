@@ -5,7 +5,7 @@
 #
 
 cmake_minimum_required(VERSION 3.12)
-project(rfnoc-blocks CXX C)
+project(rfnoc-oot-blocks CXX C)
 
 #make sure our local CMake Modules path comes first
 list(INSERT CMAKE_MODULE_PATH 0 ${CMAKE_SOURCE_DIR}/cmake/Modules)
@@ -23,9 +23,9 @@ set(UHD_PKG_DATA_DIR ${CMAKE_INSTALL_DATAROOTDIR}/uhd/
     CACHE PATH "Path to install UHD-related package data")
 set(RFNOC_PKG_DATA_DIR ${CMAKE_INSTALL_DATAROOTDIR}/uhd/rfnoc/
     CACHE PATH "Path to install RFNoC package data")
-set(GATEWARE_PKG_DATA_DIR ${RFNOC_PKG_DATA_DIR}/fpga/blocks
+set(GATEWARE_PKG_DATA_DIR ${RFNOC_PKG_DATA_DIR}/fpga/oot-blocks
     CACHE PATH "Path to install RFNoC package data")
-set(PROJECT_DATA_DIR   ${RFNOC_PKG_DATA_DIR}/blocks/
+set(PROJECT_DATA_DIR   ${RFNOC_PKG_DATA_DIR}/oot-blocks/
     CACHE PATH "Path for this project's package data")
 set(MODULES_D_DIR   ${UHD_PKG_DATA_DIR}/modules.d/
     CACHE PATH "Path for the UHD modules.d/ directory")
@@ -49,7 +49,7 @@ endif()
 ###########################################################################
 # Find UHD
 ###########################################################################
-find_package(UHD 4.7)
+find_package(UHD 4.8)
 if(UHD_FOUND)
     message(STATUS "Found UHD:")
     message(STATUS " * Version: ${UHD_VERSION}")
@@ -67,6 +67,16 @@ if(UHD_FOUND)
 else()
     message(WARNING "UHD not found. Cannot build block controllers.")
 endif()
+
+###########################################################################
+# Find Boost
+###########################################################################
+# This matches the required Boost version with the one from UHD; if you
+# require a different version, you can manually specify it here.
+include(UHDMinDepVersions)
+find_package(Boost ${UHD_BOOST_MIN_VERSION}
+    OPTIONAL_COMPONENTS unit_test_framework)
+include(UHDUnitTest OPTIONAL RESULT_VARIABLE HAVE_UHD_UNIT_TEST_FRAMEWORK)
 
 ###########################################################################
 # Find Python and uhd Python module
@@ -197,8 +207,8 @@ if(NOT CMAKE_MODULES_DIR)
     set(CMAKE_MODULES_DIR ${CMAKE_INSTALL_LIBDIR}/cmake)
 endif(NOT CMAKE_MODULES_DIR)
 
-install(FILES cmake/Modules/rfnoc-blocksConfig.cmake
-    DESTINATION ${CMAKE_MODULES_DIR}/rfnoc-blocks
+install(FILES cmake/Modules/rfnoc-oot-blocksConfig.cmake
+    DESTINATION ${CMAKE_MODULES_DIR}/rfnoc-oot-blocks
 )
 
 ########################################################################
@@ -209,11 +219,16 @@ if(UHD_FPGA_DIR)
     add_subdirectory(icores)
 endif()
 if(UHD_FOUND)
-    add_subdirectory(include/rfnoc/blocks)
+    add_subdirectory(include/rfnoc/oot-blocks)
     add_subdirectory(lib)
     add_subdirectory(apps)
     add_subdirectory(examples)
 endif()
 if(ENABLE_PYTHON_API)
     add_subdirectory(python)
+endif()
+if(HAVE_UHD_UNIT_TEST_FRAMEWORK AND Boost_UNIT_TEST_FRAMEWORK_FOUND)
+    message(STATUS "Boost unit test framework found, enabling tests.")
+    enable_testing()
+    add_subdirectory(tests)
 endif()

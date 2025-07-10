@@ -32,7 +32,7 @@
 #    ${UHD_LIBRARIES}
 #    ${Boost_LIBRARIES}
 #    -Wl,--no-as-needed
-#    rfnoc-blocks
+#    rfnoc-oot-blocks
 #)
 #
 #### Once it's built... ########################################################

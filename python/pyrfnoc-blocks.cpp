@@ -25,12 +25,14 @@ void* init_numpy()
     import_array();
     return NULL;
 }
+#include "aurora_block_control_python.hpp"
 
-PYBIND11_MODULE(rfnoc_blocks_python, m)
+PYBIND11_MODULE(rfnoc_oot_blocks_python, m)
 {
     // Initialize the numpy C API
     // (otherwise we will see segmentation faults)
     init_numpy();
 
     // uhd::rfnoc::python::export_noc_block_base(m);
-    }
+        export_aurora_block_control(m);
+}

@@ -8,7 +8,7 @@
 install(
     FILES
     config.hpp
-    #my_block_control.hpp
-    DESTINATION include/rfnoc/blocks
+    aurora_block_control.hpp
+    DESTINATION include/rfnoc/oot-blocks
     COMPONENT headers
 )

@@ -8,7 +8,7 @@
 # Build Python wrapper module for C++ -> Python bindings
 ###############################################################################
 # Global Python API constants
-set(PYMODULE_NAME rfnoc_blocks)
+set(PYMODULE_NAME rfnoc_oot_blocks)
 set(SETUP_PY_IN    "${CMAKE_CURRENT_SOURCE_DIR}/setup.py.in")
 set(SETUP_PY       "${CMAKE_CURRENT_BINARY_DIR}/setup.py")
 set(TIMESTAMP_FILE "${CMAKE_CURRENT_BINARY_DIR}/build/timestamp")

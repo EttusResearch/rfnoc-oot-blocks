@@ -7,8 +7,13 @@
 rfnoc-blocks: Example module for Python support of an RFNoC OOT Module
 """
 
-# Import all bindings from C++
-from . import rfnoc_blocks_python as lib
+import uhd.rfnoc
 
-# In UHD, we use CamelCase for names in Python, so we'll do the same here
-#MyBlockControl = lib.my_block_control
+# Import all bindings from C++
+from . import rfnoc_oot_blocks_python as lib
+
+# Expose the block controllers
+AuroraBlockControl = lib.aurora_block_control
+
+# Expose types
+channel_stop_policy = lib.channel_stop_policy

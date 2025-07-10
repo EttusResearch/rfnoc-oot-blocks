@@ -5,7 +5,7 @@
 #
 
 # This subdir contains all the gateware
-add_subdirectory(fpga/blocks)
+add_subdirectory(fpga/oot-blocks)
 # Add one subdirectory for every type of RFNoC components you have YAML files
 # for (e.g., blocks, transport_adapters, modules, ...)
 add_subdirectory(blocks)

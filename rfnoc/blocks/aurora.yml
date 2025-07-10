@@ -1,0 +1,298 @@
+schema: rfnoc_modtool_args
+module_name: aurora
+version: "1.0"
+rfnoc_version: "1.0"
+chdr_width: 64
+noc_id: 0xA404A000
+
+parameters:
+  NUM_PORTS: 4
+  QSFP_NUM: 0
+
+clocks:
+  - name: rfnoc_chdr
+    freq: "[]"
+  - name: rfnoc_ctrl
+    freq: "[]"
+
+control:
+  fpga_iface: ctrlport
+  interface_direction: slave
+  fifo_depth: 32
+  clk_domain: rfnoc_chdr
+  ctrlport:
+    byte_mode: False
+    timed: False
+    has_status: False
+
+data:
+  fpga_iface: axis_chdr
+  clk_domain: rfnoc_chdr
+  inputs:
+    in:
+      num_ports: NUM_PORTS
+  outputs:
+    out:
+      num_ports: NUM_PORTS
+
+io_ports:
+  # The actual connections for the QSFP are listed as IO ports.
+  qsfp:
+    # This is the actual connection to the QSFP pins.
+    type: x4xx_qsfp
+    drive: master
+
+make_defs:
+  # These are appended as backtick-defines in the FPGA make process
+  - |
+    QSFP${parameters['QSFP_NUM']}_0=3 \
+    QSFP${parameters['QSFP_NUM']}_1=3 \
+    QSFP${parameters['QSFP_NUM']}_2=3 \
+    QSFP${parameters['QSFP_NUM']}_3=3
+
+constraints:
+  - fpga/oot-blocks/rfnoc_block_aurora/constraints/qsfp${parameters['QSFP_NUM']}_aurora.xdc
+  # the following files are taken from the usrp/top/x400 directory inside the UHD_FPGA_DIR folder
+  - constraints/pins/qsfp${parameters['QSFP_NUM']}_0.xdc
+  - constraints/pins/qsfp${parameters['QSFP_NUM']}_1.xdc
+  - constraints/pins/qsfp${parameters['QSFP_NUM']}_2.xdc
+  - constraints/pins/qsfp${parameters['QSFP_NUM']}_3.xdc
+
+io_signature:
+  io_signatures:
+  x4xx_qsfp:
+    # X4xx Transport Adapter QSFP Interface: Connects the QSFP pins to the x4xx_eth
+    # transport adapter.
+    type: master-slave
+    ports:
+    - name: refclk_p
+      type: to-master
+      width: 1
+    - name: refclk_n
+      type: to-master
+      width: 1
+    - name: dclk
+      type: to-master
+      width: 1
+    - name: tx_p
+      type: from-master
+      width: 4
+    - name: tx_n
+      type: from-master
+      width: 4
+    - name: rx_p
+      type: to-master
+      width: 4
+    - name: rx_n
+      type: to-master
+      width: 4
+    # Transport adapter status
+    - name: recovered_clk
+      type: from-master
+      width: 1
+    - name: device_id
+      type: to-master
+      width: 16
+    - name: rx_irq
+      type: from-master
+      width: 4
+    - name: tx_irq
+      type: from-master
+      width: 4
+    - name: port_info
+      type: from-master
+      width: 128
+    - name: link_up
+      type: from-master
+      width: 4
+    - name: activity
+      type: from-master
+      width: 4
+    # AXI-Lite Register Interface
+    - name: axil_rst
+      type: to-master
+      width: 1
+    - name: axil_clk
+      type: to-master
+      width: 1
+    - name: axil_awaddr
+      type: to-master
+      width: 40
+    - name: axil_awvalid
+      type: to-master
+      width: 1
+    - name: axil_awready
+      type: from-master
+      width: 1
+      safe: "1'h1"
+    - name: axil_wdata
+      type: to-master
+      width: 32
+    - name: axil_wstrb
+      type: to-master
+      width: 4
+    - name: axil_wvalid
+      type: to-master
+      width: 1
+    - name: axil_wready
+      type: from-master
+      width: 1
+      safe: "1'h1"
+    - name: axil_bresp
+      type: from-master
+      width: 2
+    - name: axil_bvalid
+      type: from-master
+      width: 1
+    - name: axil_bready
+      type: to-master
+      width: 1
+      safe: "1'h1"
+    - name: axil_araddr
+      type: to-master
+      width: 40
+    - name: axil_arvalid
+      type: to-master
+      width: 1
+    - name: axil_arready
+      type: from-master
+      width: 1
+      safe: "1'h1"
+    - name: axil_rdata
+      type: from-master
+      width: 32
+    - name: axil_rresp
+      type: from-master
+      width: 2
+    - name: axil_rvalid
+      type: from-master
+      width: 1
+    - name: axil_rready
+      type: to-master
+      width: 1
+      safe: "1'h1"
+    - name: axi_rst
+      type: to-master
+      width: 1
+    - name: axi_clk
+      type: to-master
+      width: 1
+    - name: axi_araddr
+      type: from-master
+      width: 49
+    - name: axi_arburst
+      type: from-master
+      width: 2
+    - name: axi_arcache
+      type: from-master
+      width: 4
+    - name: axi_arlen
+      type: from-master
+      width: 8
+    - name: axi_arlock
+      type: from-master
+      width: 1
+    - name: axi_arprot
+      type: from-master
+      width: 3
+    - name: axi_arqos
+      type: from-master
+      width: 4
+    - name: axi_arready
+      type: to-master
+      width: 1
+      safe: "1'h1"
+    - name: axi_arsize
+      type: from-master
+      width: 3
+    - name: axi_arvalid
+      type: from-master
+      width: 1
+    - name: axi_awaddr
+      type: from-master
+      width: 49
+    - name: axi_awburst
+      type: from-master
+      width: 2
+    - name: axi_awcache
+      type: from-master
+      width: 4
+    - name: axi_awlen
+      type: from-master
+      width: 8
+    - name: axi_awlock
+      type: from-master
+      width: 1
+    - name: axi_awprot
+      type: from-master
+      width: 3
+    - name: axi_awqos
+      type: from-master
+      width: 4
+    - name: axi_awready
+      type: to-master
+      width: 1
+      safe: "1'h1"
+    - name: axi_awsize
+      type: from-master
+      width: 3
+    - name: axi_awvalid
+      type: from-master
+      width: 1
+    - name: axi_bready
+      type: from-master
+      width: 1
+      safe: "1'h1"
+    - name: axi_bresp
+      type: to-master
+      width: 2
+    - name: axi_bvalid
+      type: to-master
+      width: 1
+      safe: "1'h1"
+    - name: axi_rdata
+      type: to-master
+      width: 128
+    - name: axi_rlast
+      type: to-master
+      width: 1
+    - name: axi_rready
+      type: from-master
+      width: 1
+      safe: "1'h1"
+    - name: axi_rresp
+      type: to-master
+      width: 2
+    - name: axi_rvalid
+      type: to-master
+      width: 1
+    - name: axi_wdata
+      type: from-master
+      width: 128
+    - name: axi_wlast
+      type: from-master
+      width: 1
+    - name: axi_wready
+      type: to-master
+      width: 1
+      safe: "1'h1"
+    - name: axi_wstrb
+      type: from-master
+      width: 16
+    - name: axi_wvalid
+      type: from-master
+      width: 1
+
+fpga_includes:
+    # This path is the exact path to the relevant Makefile.srcs in this repository.
+    # After installation, the whole directory will become available under a
+    # similar path, also in the include directories of the image builder, e.g.
+    # under /usr/share/uhd/rfnoc/fpga/aurora/rfnoc_block_aurora/Makefile.srcs.
+  - include: "fpga/oot-blocks/rfnoc_block_aurora/Makefile.srcs"
+    # This make variable has to match the one in the file referenced above.
+    make_var: "$(RFNOC_BLOCK_AURORA_SRCS)"
+    # Because this block requires external IP, we also list that here.
+  - include: "fpga/oot-blocks/ip/aurora_100g/Makefile.inc"
+    # Like above, this is the Make variable that lists the sources for the IP
+    # we require here.
+    make_var: "$(IP_AURORA_100G_SRCS)"
