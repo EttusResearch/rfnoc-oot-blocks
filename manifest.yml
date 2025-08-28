@@ -1,0 +1,13 @@
+title: NI / Ettus Research RFNoC OOT Blocks
+brief: Out-of-tree RFNoC blocks extending UHD
+tags:
+  - aurora
+authors:
+- Ettus Research, an NI Brand
+copyright_owner:
+- Ettus Research, an NI Brand
+license: GPLv3
+hdl_license: LGPLv3
+description: |
+  rfnoc-oot-blocks is a collection of OOT RFNoC blocks, maintained by NI / Emerson,
+  that are not part of the core UHD driver (libuhd).

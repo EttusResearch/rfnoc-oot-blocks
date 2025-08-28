@@ -4,6 +4,10 @@ version: "1.0"
 rfnoc_version: "1.0"
 chdr_width: 64
 noc_id: 0xA404A000
+name: Aurora Interface Block
+description: |
+  This block allows direct connection to another FPGA board using 100 Gigabit
+  Aurora instead of Ethernet.
 
 parameters:
   NUM_PORTS: 4
