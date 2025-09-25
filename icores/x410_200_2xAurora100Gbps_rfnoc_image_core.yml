@@ -8,8 +8,8 @@ license: >-                             # License information used in file heade
 version: '1.0'                          # File version
 chdr_width: 64                          # Bit width of the CHDR bus for this image
 device: 'x410'                          # USRP type
-image_core_name: >-                     # Name to use for the generated output files
-  'usrp_x410_200_2xAurora100Gbps'
+image_core_name: 'usrp_x410_200_2xAurora100Gbps'
+                                        # Name to use for the generated output files
 default_target: 'X410'                  # Default make target
 
 parameters:
